@@ -1,68 +1,150 @@
+#include "RatingsController.h"
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 #include <map>
 #include <iomanip>
+#include <stdexcept>
 
-using namespace std;
+class RatingsAndReviews {
+private:
+    struct Review {
+        int rating;
+        std::string reviewText;
+    };
 
-struct User {
-    double buyerRating = 3.0;  // Default buyer rating
-    double sellerRating = 3.0; // Default seller rating
-    int buyerRatingsCount = 0;
-    int sellerRatingsCount = 0;
+    // Vector of reviews
+    std::map<std::string, std::vector<Review>> userRatings;
+
+    // Used for review ratings
+    std::map<std::string, double> averageRatings;
+
+    // Update average rating after a new review
+    void updateAverageRating(const std::string& userID) {
+        const auto& reviews = userRatings[userID];
+        if (reviews.empty()) {
+            averageRatings[userID] = 3.0; // Default rating
+            return;
+        }
+
+        double sum = 0.0;
+        for (const auto& review : reviews) {
+            sum += review.rating;
+        }
+        averageRatings[userID] = sum / reviews.size();
+    }
+
+public:
+    RatingsAndReviews() = default;
+
+    // Add a review for a user
+    void addReview(const std::string& userID, int rating, const std::string& reviewText = "") {
+        if (rating < 1 || rating > 5) {
+            throw std::invalid_argument("Rating must be between 1 and 5.");
+        }
+
+        userRatings[userID].push_back({rating, reviewText});
+        updateAverageRating(userID);
+    }
+
+    // Get the average rating of a user
+    double getAverageRating(const std::string& userID) const {
+        auto it = averageRatings.find(userID);
+        if (it != averageRatings.end()) {
+            return it->second;
+        }
+        return 3.0; // Default rating for new users
+    }
+
+    // Get all reviews for a user
+    std::vector<std::string> getReviews(const std::string& userID) const {
+        std::vector<std::string> reviews;
+        auto it = userRatings.find(userID);
+        if (it != userRatings.end()) {
+            for (const auto& review : it->second) {
+                std::ostringstream oss;
+                oss << "Rating: " << review.rating << " | Comment: " << review.reviewText;
+                reviews.push_back(oss.str());
+            }
+        }
+        return reviews;
+    }
+
+    // Display reviews and average rating for a user
+    void displayReviews(const std::string& userID) const {
+        std::cout << "Reviews for User: " << userID << "\n";
+        std::cout << "Average Rating: " << std::fixed << std::setprecision(1) << getAverageRating(userID) << "\n";
+        const auto& reviews = getReviews(userID);
+        for (const auto& review : reviews) {
+            std::cout << review << "\n";
+        }
+        if (reviews.empty()) {
+            std::cout << "No reviews yet.\n";
+        }
+    }
 };
 
-map<string, User> users; // Users database (will be changed after)
+void interactiveMenu() {
+    RatingsAndReviews ratingsSystem;
+    std::string input, userID, reviewText;
+    int choice, rating;
 
-void rateUser(User &user, double rating, bool isSeller) {
-    if (isSeller) {
-        user.sellerRating = ((user.sellerRating * user.sellerRatingsCount) + rating) / (user.sellerRatingsCount + 1);
-        user.sellerRatingsCount++;
-    } else {
-        user.buyerRating = ((user.buyerRating * user.buyerRatingsCount) + rating) / (user.buyerRatingsCount + 1);
-        user.buyerRatingsCount++;
+    while (true) {
+        std::cout << "\n--- Ratings and Reviews System ---\n";
+        std::cout << "1. Add a Review\n";
+        std::cout << "2. View User's Average Rating\n";
+        std::cout << "3. View All Reviews for a User\n";
+        std::cout << "4. Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1:
+            // Add review
+            std::cout << "Enter the User ID to review: ";
+            std::cin >> userID;
+            std::cout << "Enter a rating (1-5): ";
+            std::cin >> rating;
+            std::cin.ignore();
+            std::cout << "Enter a review: ";
+            std::getline(std::cin, reviewText);
+
+            try {
+                ratingsSystem.addReview(userID, rating, reviewText);
+                std::cout << "Review added successfully.\n";
+            } catch (const std::exception& e) {
+                std::cerr << "Error: " << e.what() << "\n";
+            }
+            break;
+
+        case 2:
+            // View average rating
+            std::cout << "Enter the User ID to view: ";
+            std::cin >> userID;
+            std::cout << "Average Rating for " << userID << ": "
+                      << std::fixed << std::setprecision(1) << ratingsSystem.getAverageRating(userID) << "\n";
+            break;
+
+        case 3:
+            // View all reviews
+            std::cout << "Enter the User ID to view: ";
+            std::cin >> userID;
+            ratingsSystem.displayReviews(userID);
+            break;
+
+        case 4:
+            // Exit
+            std::cout << "Exiting the program. Goodbye!\n";
+            return;
+
+        default:
+            std::cout << "Invalid choice. Please try again.\n";
+        }
     }
 }
 
-// Function to handle rating a transaction
-void rateTransaction(const string &buyerUsername, const string &sellerUsername, double buyerRating, double sellerRating) {
-    // Check if buyer and seller exist in the database
-    if (users.find(buyerUsername) == users.end() || users.find(sellerUsername) == users.end()) {
-        cout << "Error: Buyer or seller username not found.\n";
-        return;
-    }
-
-    // Validate ratings
-    if (buyerRating < 1 || buyerRating > 5 || sellerRating < 1 || sellerRating > 5) {
-        cout << "Error: Ratings must be between 1 and 5.\n";
-        return;
-    }
-
-    // Update ratings
-    User &buyer = users[buyerUsername];
-    User &seller = users[sellerUsername];
-
-    rateUser(buyer, buyerRating, false); // Rate the buyer
-    rateUser(seller, sellerRating, true); // Rate the seller
-
-    cout << "Transaction rated successfully.\n";
+int main() {
+    interactiveMenu();
+    return 0;
 }
-
-// Retrieve a user's seller rating
-double getSellerRating(const string &username) {
-    if (users.find(username) != users.end()) {
-        return users[username].sellerRating;
-    }
-    cout << "Error: Username not found.\n";
-    return -1; // Invalid rating value
-}
-
-// Retrieve a user's buyer rating
-double getBuyerRating(const string &username) {
-    if (users.find(username) != users.end()) {
-        return users[username].buyerRating;
-    }
-    cout << "Error: Username not found.\n";
-    return -1; // Invalid rating value
-}
-

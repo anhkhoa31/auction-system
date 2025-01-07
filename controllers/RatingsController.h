@@ -1,28 +1,23 @@
-#ifndef RATINGS_CONTROLLER_H
-#define RATINGS_CONTROLLER_H
+#ifndef RATINGSCONTROLLER_H
+#define RATINGSCONTROLLER_H
 
-#include <iostream>
 #include <string>
+#include <vector>
 #include <map>
-#include <iomanip>
 
-using namespace std;
-
-struct User {
-    double buyerRating = 3.0;
-    double sellerRating = 3.0;
-    int buyerRatingsCount = 0;
-    int sellerRatingsCount = 0;
+class RatingsAndReviews {
+    struct Review {
+        int rating;
+        std::string reviewText;
+    };
+    std::map<std::string, std::vector<Review>> userRatings;
+    std::map<std::string, double> averageRatings;
+    void updateAverageRating(const std::string& userID);
+    void addReview();
+    double getAverageRating(const std::string& userID);
+    std::vector<std::string> getReviews(const std::string& userID);
+    void displayReviews(const std::string& userID);
 };
-
-extern map<string, User> users;
-
-void rateUser(User &user, double rating, bool isSeller);
-
-void rateTransaction(const string &buyerUsername, const string &sellerUsername, double buyerRating, double sellerRating);
-
-double getSellerRating(const string &username);
-
-double getBuyerRating(const string &username);
+void interactiveMenu();
 
 #endif
