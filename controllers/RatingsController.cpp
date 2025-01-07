@@ -1,4 +1,3 @@
-#include "RatingsController.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -14,10 +13,10 @@ private:
         std::string reviewText;
     };
 
-    // Vector of reviews
+    // Stores user reviews
     std::map<std::string, std::vector<Review>> userRatings;
 
-    // Used for review ratings
+    // Stores average ratings for users
     std::map<std::string, double> averageRatings;
 
     // Update average rating after a new review
@@ -39,13 +38,15 @@ public:
     RatingsAndReviews() = default;
 
     // Add a review for a user
-    void addReview(const std::string& userID, int rating, const std::string& reviewText = "") {
+    void addReview(const std::string& fromUserID, const std::string& toUserID, int rating, const std::string& reviewText = "") {
+        // Validate rating
         if (rating < 1 || rating > 5) {
-            throw std::invalid_argument("Rating must be between 1 and 5.");
+            throw std::invalid_argument("Invalid choice, must be between 1 and 5");
         }
 
-        userRatings[userID].push_back({rating, reviewText});
-        updateAverageRating(userID);
+        // Add the review
+        userRatings[toUserID].push_back({rating, reviewText});
+        updateAverageRating(toUserID);
     }
 
     // Get the average rating of a user
@@ -80,18 +81,18 @@ public:
             std::cout << review << "\n";
         }
         if (reviews.empty()) {
-            std::cout << "No reviews yet.\n";
+            std::cout << "No reviews yet\n";
         }
     }
 };
 
 void interactiveMenu() {
     RatingsAndReviews ratingsSystem;
-    std::string input, userID, reviewText;
+    std::string fromUserID, toUserID, reviewText, userID;
     int choice, rating;
 
     while (true) {
-        std::cout << "\n--- Ratings and Reviews System ---\n";
+        std::cout << "\n--- Ratings and Reviews Feature ---\n";
         std::cout << "1. Add a Review\n";
         std::cout << "2. View User's Average Rating\n";
         std::cout << "3. View All Reviews for a User\n";
@@ -102,8 +103,10 @@ void interactiveMenu() {
         switch (choice) {
         case 1:
             // Add review
-            std::cout << "Enter the User ID to review: ";
-            std::cin >> userID;
+            std::cout << "Enter your User ID: "; // Stimulating 2 people for testing purpose, changed later
+            std::cin >> fromUserID;
+            std::cout << "Enter the User ID to review: "; // Stimulating 2 people for testing purpose, changed later
+            std::cin >> toUserID;
             std::cout << "Enter a rating (1-5): ";
             std::cin >> rating;
             std::cin.ignore();
@@ -111,8 +114,8 @@ void interactiveMenu() {
             std::getline(std::cin, reviewText);
 
             try {
-                ratingsSystem.addReview(userID, rating, reviewText);
-                std::cout << "Review added successfully.\n";
+                ratingsSystem.addReview(fromUserID, toUserID, rating, reviewText);
+                std::cout << "Review added successfully\n";
             } catch (const std::exception& e) {
                 std::cerr << "Error: " << e.what() << "\n";
             }
@@ -120,7 +123,7 @@ void interactiveMenu() {
 
         case 2:
             // View average rating
-            std::cout << "Enter the User ID to view: ";
+            std::cout << "Enter a User ID to view: ";
             std::cin >> userID;
             std::cout << "Average Rating for " << userID << ": "
                       << std::fixed << std::setprecision(1) << ratingsSystem.getAverageRating(userID) << "\n";
@@ -135,11 +138,11 @@ void interactiveMenu() {
 
         case 4:
             // Exit
-            std::cout << "Exiting the program. Goodbye!\n";
+            std::cout << "Exiting\n";
             return;
 
         default:
-            std::cout << "Invalid choice. Please try again.\n";
+            std::cout << "Invalid choice. Try again\n";
         }
     }
 }
