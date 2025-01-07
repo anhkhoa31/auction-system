@@ -107,10 +107,10 @@ void interactiveMenu() {
             std::cin >> fromUserID;
             std::cout << "Enter the User ID to review: "; // Stimulating 2 people for testing purpose, changed later
             std::cin >> toUserID;
-            std::cout << "Enter a rating (1-5): ";
+            std::cout << "Enter rating (1-5): ";
             std::cin >> rating;
             std::cin.ignore();
-            std::cout << "Enter a review: ";
+            std::cout << "Enter review: ";
             std::getline(std::cin, reviewText);
 
             try {
