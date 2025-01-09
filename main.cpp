@@ -1,6 +1,7 @@
-#include "views/AuthView.h"
+#include <iostream>
+#include "application/Application.h"
 
 int main() {
-    showLoginScreen(); // Call the login screen function
-    return 0;
+    // We simply call our static method that does everything
+    return Application::run();
 }

@@ -3,10 +3,10 @@
 
 #include <string>
 
-// Function to validate password strength
-bool isStrongPassword(const std::string& password);
-
-// Function to validate email format
-bool isValidEmail(const std::string& email);
+class Validation {
+public:
+    // Returns false if the password is "12345", "password", too short, etc.
+    static bool isValidPassword(const std::string& password);
+};
 
 #endif
