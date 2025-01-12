@@ -3,13 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-/**
- * readMembersFromCSV:
- *   - Reads each line from a CSV file
- *   - Splits by comma
- *   - Builds a Member object
- *   - Returns a vector<Member>
- */
+// Methods for handling Member data
 std::vector<Member> FileHandler::readMembersFromCSV(const std::string& filePath) {
     std::vector<Member> members;
     std::ifstream file(filePath);
@@ -27,71 +21,42 @@ std::vector<Member> FileHandler::readMembersFromCSV(const std::string& filePath)
         std::string token;
         std::vector<std::string> tokens;
 
-        // Split line by comma
         while (std::getline(ss, token, ',')) {
             tokens.push_back(token);
         }
 
-        /**
-         * We’ll define the CSV columns in this exact order (10 columns):
-         *   0: memberID
-         *   1: username
-         *   2: password
-         *   3: name
-         *   4: phoneNumber
-         *   5: email
-         *   6: IDType
-         *   7: IDNumber
-         *   8: creditPoints
-         *   9: avgRatings
-         *
-         * If we don't have at least 10 columns, skip this line.
-         */
         if (tokens.size() < 10) {
             std::cerr << "Skipping line due to insufficient columns: " << line << std::endl;
             continue;
         }
 
         Member m;
-        
-        // 0: memberID
         try {
             m.setMemberID(std::stoi(tokens[0]));
         } catch (...) {
-            // handle parse error if needed
             continue;
         }
 
-        // 1: username
         m.setUsername(tokens[1]);
-        // 2: password
         m.setPassword(tokens[2]);
-        // 3: name
         m.setName(tokens[3]);
-        // 4: phoneNumber
         m.setPhoneNumber(tokens[4]);
-        // 5: email
         m.setEmail(tokens[5]);
-        // 6: IDType
         m.setIDType(tokens[6]);
-        // 7: IDNumber
         m.setIDNumber(tokens[7]);
 
-        // 8: creditPoints
         try {
             m.setCreditPoints(std::stoi(tokens[8]));
         } catch (...) {
             m.setCreditPoints(0);
         }
 
-        // 9: avgRatings
         try {
             m.setAvgRatings(std::stoi(tokens[9]));
         } catch (...) {
             m.setAvgRatings(3);
         }
 
-        // Add this Member to the list
         members.push_back(m);
     }
 
@@ -99,11 +64,6 @@ std::vector<Member> FileHandler::readMembersFromCSV(const std::string& filePath)
     return members;
 }
 
-/**
- * writeMembersToCSV:
- *   - Loops through the vector of Members
- *   - Writes each Member to a single line in the CSV
- */
 void FileHandler::writeMembersToCSV(const std::string& filePath, const std::vector<Member>& members) {
     std::ofstream file(filePath);
     if (!file.is_open()) {
@@ -112,18 +72,81 @@ void FileHandler::writeMembersToCSV(const std::string& filePath, const std::vect
     }
 
     for (const auto& m : members) {
-        // Maintain the same column order as in readMembersFromCSV!
-        file << m.getMemberID() << ","   // 0
-             << m.getUsername() << ","   // 1
-             << m.getPassword() << ","   // 2
-             << m.getName() << ","       // 3
-             << m.getPhoneNumber() << ","// 4
-             << m.getEmail() << ","      // 5
-             << m.getIDType() << ","     // 6
-             << m.getIDNumber() << ","   // 7
-             << m.getCreditPoints() << "," // 8
-             << m.getAvgRatings()         // 9
-             << std::endl;
+        file << m.getMemberID() << ","
+             << m.getUsername() << ","
+             << m.getPassword() << ","
+             << m.getName() << ","
+             << m.getPhoneNumber() << ","
+             << m.getEmail() << ","
+             << m.getIDType() << ","
+             << m.getIDNumber() << ","
+             << m.getCreditPoints() << ","
+             << m.getAvgRatings() << "\n";
+    }
+
+    file.close();
+}
+
+// Methods for handling Item data
+std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
+    std::vector<Item> items;
+    std::ifstream file(filePath);
+
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file: " << filePath << std::endl;
+        return items;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
+
+        std::stringstream ss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+
+        while (std::getline(ss, token, ',')) {
+            tokens.push_back(token);
+        }
+
+        if (tokens.size() < 10) continue;
+
+        items.emplace_back(
+            std::stoi(tokens[0]),          // ID
+            tokens[1],                     // Name
+            tokens[2],                     // Category
+            tokens[3],                     // Short Description
+            std::stod(tokens[4]),          // Starting Bid
+            std::stod(tokens[5]),          // Bid Increment
+            tokens[6],                     // End Date
+            std::stoi(tokens[7]),          // Minimum Buyer Rating
+            std::stod(tokens[8]),          // Seller Rating
+            std::stoi(tokens[9])           // Seller ID
+        );
+    }
+
+    file.close();
+    return items;
+}
+
+void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items) {
+    std::ofstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file: " << filePath << std::endl;
+        return;
+    }
+
+    for (const auto& item : items) {
+        file << item.getId() << ","
+             << item.getName() << ","
+             << item.getCategory() << ","
+             << item.getShortDescription() << ","
+             << item.getStartingBid() << ","
+             << item.getBidIncrement() << ","
+             << item.getEndDate() << ","
+             << item.getMinBuyerRating() << ","
+             << item.getSellerRating() << ","
+             << item.getSellerId() << "\n";
     }
 
     file.close();

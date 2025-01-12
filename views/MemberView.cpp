@@ -1,10 +1,14 @@
 #include "MemberView.h"
 #include <iostream>
 #include "ProfileView.h"   // Include your new ProfileView
+#include "ItemView.h"
 #include "../controllers/MemberController.h" 
+#include "../controllers/ItemController.h"
 // ^ if you need to save after changes
 
 void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allMembers) {
+    ItemController itemController;
+    std::vector<Item> items = itemController.getItems();
     int choice = 0;
     while (choice != 6) {
         std::cout << "\n-------------------Member Menu-------------------\n";
@@ -28,6 +32,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 break;
             case 3:
                 std::cout << "View My Item Listings (feature not implemented yet)\n";
+                ItemView::showMemberItemList(items);
                 break;
             case 4:
                 std::cout << "View My Bidding Activity (feature not implemented yet)\n";

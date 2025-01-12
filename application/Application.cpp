@@ -1,7 +1,9 @@
 #include "Application.h"
 #include <iostream>
 #include "../controllers/MemberController.h"
+#include "../controllers/ItemController.h"
 #include "../views/AuthView.h"
+#include "../views/ItemView.h"
 
 int Application::run() {
     using namespace std;
@@ -36,12 +38,15 @@ int Application::run() {
 
     // 1. Load existing members from CSV
     std::vector<Member> members = MemberController::loadMembersFromFile("data/members.csv");
+    ItemController itemController;
+    std::vector<Item> items = itemController.getItems();
 
     int choice = -1;
     while (choice != 0) {
         std::cout << "\n==========Application Menu==========\n";
         std::cout << "1. Login\n";
         std::cout << "2. Register\n";
+        std::cout << "3. View listing items\n";
         std::cout << "0. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
@@ -52,6 +57,9 @@ int Application::run() {
                 break;
             case 2:
                 AuthView::showRegisterScreen(members);
+                break;
+            case 3:
+                ItemView::showNonMemberItemList(items);
                 break;
             case 0:
                 std::cout << "Exiting program...\n";
