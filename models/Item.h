@@ -19,10 +19,8 @@ private:
     int highestBidderId;
 
 public:
-    // Default Constructor
     Item();
 
-    // Parameterized Constructor
     Item(int id,
          const std::string& name,
          const std::string& category,
@@ -34,7 +32,6 @@ public:
          double sellerRating,
          int sellerId);
 
-    // Getters
     int getId() const;
     std::string getName() const;
     std::string getCategory() const;
@@ -48,7 +45,6 @@ public:
     int getSellerId() const;
     int getHighestBidderId() const;
 
-    // Setters
     void setId(int id);
     void setName(const std::string& name);
     void setCategory(const std::string& category);
@@ -62,7 +58,6 @@ public:
     void setSellerId(int sellerId);
     void setHighestBidderId(int highestBidderId);
 
-    // Utility Methods
     bool isEligibleToBid(int buyerRating) const;
 };
 

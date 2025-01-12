@@ -1,6 +1,6 @@
 #include "MemberView.h"
 #include <iostream>
-#include "ProfileView.h"   // Include your new ProfileView
+#include "ProfileView.h"
 #include "ItemView.h"
 #include "../controllers/MemberController.h" 
 #include "../controllers/ItemController.h"
