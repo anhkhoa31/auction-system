@@ -1,34 +1,89 @@
-#include "../views/AuthView.h"
-#include "controllers/AuthController.h"
+#include "AuthView.h"
+#include "MemberView.h"
 #include <iostream>
+#include <limits> // for std::numeric_limits<std::streamsize>::max()
+#include "../controllers/AuthController.h"
+#include "../utils/Validation.h"
 
-using namespace std;
+void AuthView::showLoginScreen(std::vector<Member>& members) {
+    std::string username, password;
+    std::cout << "\n==== LOGIN ====\n";
+    std::cout << "Enter username: ";
+    std::cin >> username;
+    std::cout << "Enter password: ";
+    std::cin >> password;
 
-void showLoginScreen() {
-    int choice;
-    cout << "-------------------Login Menu-------------------" << endl;
-    cout << "1. Login" << endl;
-    cout << "2. Register" << endl;
-    cout << "3. Forget Password" << endl;
-    cout << "4. Exit" << endl;
-    cout << "Enter your choice: ";
-    cin >> choice;
+    AuthController authController;
+    bool success = authController.login(members, username, password);
+    if (success) {
+        // Find which Member just logged in
+        Member* loggedInMember = nullptr;
+        for (auto &m : members) {
+            if (m.getUsername() == username && m.getPassword() == password) {
+                loggedInMember = &m;
+                break;
+            }
+        }
 
-    switch (choice) {
-        case 1:
-            loginUser();
-            break;
-        case 2:
-            registerMember();
-            break;
-        case 3:
-            resetPassword();
-            break;
-        case 4:
-            cout << "Exiting the application. Goodbye!" << endl;
-            exit(0);
-        default:
-            cout << "Invalid choice. Please try again." << endl;
-            showLoginScreen();
+        // If we found a matching Member, show the Member Menu
+        if (loggedInMember) {
+            MemberView::showMemberMenu(*loggedInMember, members);
+        } else {
+            std::cout << "Error: Could not identify the logged-in user.\n";
+        }
+    } else {
+        std::cout << "Wrong username or password. Please try again or register.\n";
     }
+}
+
+void AuthView::showRegisterScreen(std::vector<Member>& members) {
+    std::string username, password, name, phoneNumber, email, idType, idNumber;
+
+    std::cout << "\n==== REGISTER ====\n";
+    std::cout << "Enter username: ";
+    std::cin >> username;
+
+    // Validate password in a loop until it’s strong enough
+    do {
+        std::cout << "Enter password: ";
+        std::cin >> password;
+        if (!Validation::isValidPassword(password)) {
+            std::cout << "Weak password! (e.g., '12345' or 'password'). Try again.\n";
+        }
+    } while (!Validation::isValidPassword(password));
+
+    // We need to consume any leftover newline before reading full name
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    std::cout << "Enter full name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Enter phone number: ";
+    std::cin >> phoneNumber;
+
+    std::cout << "Enter email: ";
+    std::cin >> email;
+
+    std::cout << "Enter ID Type: ";
+    std::cin >> idType;
+
+    std::cout << "Enter ID Number: ";
+    std::cin >> idNumber;
+
+    // For simplicity, let’s generate an ID based on (size + 1)
+    int newMemberID = members.size() + 1;
+
+    // Create the new Member
+    Member newMember(newMemberID,
+                     username,
+                     password,
+                     name,
+                     phoneNumber,
+                     email,
+                     idType,
+                     idNumber);
+
+    // Attempt registration
+    AuthController authController;
+    authController.registerMember(members, newMember);
 }

@@ -1,10 +1,14 @@
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
 
-#include "models/Member.h"
+#include <string>
 #include <vector>
+#include "../models/Member.h"
 
-std::vector<Member> loadMembersFromCSV();
-void saveMembersToCSV(const std::vector<Member>& members);
+class FileHandler {
+public:
+    static std::vector<Member> readMembersFromCSV(const std::string& filePath);
+    static void writeMembersToCSV(const std::string& filePath, const std::vector<Member>& members);
+};
 
 #endif
