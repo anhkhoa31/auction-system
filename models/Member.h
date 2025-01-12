@@ -3,25 +3,24 @@
 
 #include <string>
 #include <vector>
-
-// Forward declare Item if necessary
-// class Item;
+#include "Item.h"  // Include Item so we can use std::vector<Item>
 
 class Member {
 private:
     int memberID;
     std::string username;
-    std::string password;       // must not be "12345" or "password"
+    std::string password;
     std::string name;
     std::string phoneNumber;
     std::string email;
     std::string IDType;
     std::string IDNumber;
-    int creditPoints;           // (new member set to 0)
-    int avgRatings;             // (default rating = 3)
-    std::vector<int> ratingThroughTransaction;
-    // std::vector<Item> bidItems;
-    // std::vector<Item> sellItems;
+    int creditPoints;
+    int avgRatings;
+
+    // NEW FIELDS
+    std::vector<Item> bidItems;   // Items the member is currently bidding on
+    std::vector<Item> sellItems;  // Items the member has posted for sale
 
 public:
     Member();
@@ -34,7 +33,7 @@ public:
            const std::string& IDType,
            const std::string& IDNumber);
 
-    // Getters and setters
+    // Existing getters and setters
     int getMemberID() const;
     void setMemberID(int id);
 
@@ -65,13 +64,12 @@ public:
     int getAvgRatings() const;
     void setAvgRatings(int rating);
 
-    std::vector<int> getRatingThroughTransaction() const;
-    void addRating(int rating);
+    // NEW METHODS for bidItems and sellItems
+    std::vector<Item>& getBidItems();
+    void addBidItem(const Item& item);
 
-    // For future item management if needed:
-    // void addBidItem(const Item& item);
-    // void addSellItem(const Item& item);
-    // etc.
+    std::vector<Item>& getSellItems();
+    void addSellItem(const Item& item);
 };
 
 #endif

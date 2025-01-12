@@ -1,5 +1,7 @@
 #include "Member.h"
+#include <iostream>
 
+// Default constructor
 Member::Member()
     : memberID(0),
       username(""),
@@ -12,8 +14,11 @@ Member::Member()
       creditPoints(0),
       avgRatings(3) // default rating
 {
+    // bidItems, sellItems, and ratingThroughTransaction 
+    // are automatically default-initialized (empty)
 }
 
+// Parametrized constructor
 Member::Member(int id,
                const std::string& user,
                const std::string& pass,
@@ -33,9 +38,13 @@ Member::Member(int id,
       creditPoints(0),
       avgRatings(3) // default rating
 {
+    // bidItems, sellItems, and ratingThroughTransaction 
+    // remain empty by default
 }
 
-// Getters and setters
+// ------------------------------------------------------------------
+// Getters / Setters for basic fields
+// ------------------------------------------------------------------
 int Member::getMemberID() const {
     return memberID;
 }
@@ -106,9 +115,29 @@ void Member::setAvgRatings(int rating) {
     avgRatings = rating;
 }
 
-std::vector<int> Member::getRatingThroughTransaction() const {
-    return ratingThroughTransaction;
+// ------------------------------------------------------------------
+// ratingThroughTransaction
+// ------------------------------------------------------------------
+// std::vector<int> Member::getRatingThroughTransaction() const {
+//     return ratingThroughTransaction;
+// }
+// void Member::addRating(int rating) {
+//     ratingThroughTransaction.push_back(rating);
+// }
+
+// ------------------------------------------------------------------
+// bidItems & sellItems
+// ------------------------------------------------------------------
+std::vector<Item>& Member::getBidItems() {
+    return bidItems;
 }
-void Member::addRating(int rating) {
-    ratingThroughTransaction.push_back(rating);
+void Member::addBidItem(const Item& item) {
+    bidItems.push_back(item);
+}
+
+std::vector<Item>& Member::getSellItems() {
+    return sellItems;
+}
+void Member::addSellItem(const Item& item) {
+    sellItems.push_back(item);
 }

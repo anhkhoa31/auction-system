@@ -2,56 +2,63 @@
 #define ITEM_H
 
 #include <string>
-#include <vector>
-#include "Bid.h"
-using namespace std;
 
 class Item {
 private:
-    int itemID;
-    string itemName;
-    string category;
-    string description;
-    int starting_bid;
-    int bid_increment;
-    string creation_datetime;
-    string end_datetime;
-    float minium_rating;
-    int sellerID;
-    string highestBidder;
-    vector<Bid> bid;
+    int id;
+    std::string name;
+    std::string category;
+    std::string shortDescription;
+    double startingBid;
+    double currentBid;
+    double bidIncrement;
+    std::string endDate;
+    int minBuyerRating;
+    double sellerRating;
+    int sellerId;
+    int highestBidderId;
 
 public:
-    // Constructor
-    Item(int id, const string &name, const string &category, const string &description, int startBid, int increment, const string &endDate, float minRating, int sellerId);
+    Item();
 
-    // Getters
-    int getItemID() const;
-    string getItemName() const;
-    string getCategory() const;
-    string getDescription() const;
-    int getStartingBid() const;
-    int getBidIncrement() const;
-    string getCreationDateTime() const;
-    string getEndDateTime() const;
-    float getMinimumRating() const;
-    int getSellerID() const;
-    string getHighestBidder() const;
+    Item(int id,
+         const std::string& name,
+         const std::string& category,
+         const std::string& shortDescription,
+         double startingBid,
+         double bidIncrement,
+         const std::string& endDate,
+         int minBuyerRating,
+         double sellerRating,
+         int sellerId);
 
-    // Setters
-    void setItemName(const string &name);
-    void setCategory(const string &category);
-    void setDescription(const string &description);
-    void setStartingBid(int bid);
-    void setBidIncrement(int increment);
-    void setEndDateTime(const string &endDate);
-    void setHighestBidder(const string &bidder);
+    int getId() const;
+    std::string getName() const;
+    std::string getCategory() const;
+    std::string getShortDescription() const;
+    double getStartingBid() const;
+    double getCurrentBid() const;
+    double getBidIncrement() const;
+    std::string getEndDate() const;
+    int getMinBuyerRating() const;
+    double getSellerRating() const;
+    int getSellerId() const;
+    int getHighestBidderId() const;
 
-    // Methods
-    void displayItemDetails() const;
-    void addBid(const Bid &newBid);
-    bool removeItemListing();
-    int getHighestBid() const;
+    void setId(int id);
+    void setName(const std::string& name);
+    void setCategory(const std::string& category);
+    void setShortDescription(const std::string& shortDescription);
+    void setStartingBid(double startingBid);
+    void setCurrentBid(double currentBid);
+    void setBidIncrement(double bidIncrement);
+    void setEndDate(const std::string& endDate);
+    void setMinBuyerRating(int minBuyerRating);
+    void setSellerRating(double sellerRating);
+    void setSellerId(int sellerId);
+    void setHighestBidderId(int highestBidderId);
+
+    bool isEligibleToBid(int buyerRating) const;
 };
 
 #endif // ITEM_H

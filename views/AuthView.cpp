@@ -48,7 +48,7 @@ void AuthView::showRegisterScreen(std::vector<Member>& members) {
         std::cout << "Enter password: ";
         std::cin >> password;
         if (!Validation::isValidPassword(password)) {
-            std::cout << "Weak password! (e.g., '12345' or 'password'). Try again.\n";
+            std::cout << "Weak password! Please enter new one!\n";
         }
     } while (!Validation::isValidPassword(password));
 
@@ -64,7 +64,7 @@ void AuthView::showRegisterScreen(std::vector<Member>& members) {
     std::cout << "Enter email: ";
     std::cin >> email;
 
-    std::cout << "Enter ID Type: ";
+    std::cout << "Enter ID Type(citizen ID, passport): ";
     std::cin >> idType;
 
     std::cout << "Enter ID Number: ";

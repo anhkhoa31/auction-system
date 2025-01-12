@@ -1,162 +1,132 @@
 #include "Item.h"
-#include <iostream>
-#include <vector>
-#include <ctime>
-#include <iomanip>
-using namespace std;
 
-// Helper function to get the current date in YYYY/MM/DD format
-string getCurrentDate()
+Item::Item()
+    : id(0),
+      name(""),
+      category(""),
+      shortDescription(""),
+      startingBid(0.0),
+      currentBid(0.0),
+      bidIncrement(0.0),
+      endDate(""),
+      minBuyerRating(0),
+      sellerRating(0.0),
+      sellerId(0),
+      highestBidderId(-1) // default highest bidder
 {
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    ostringstream oss;
-    oss << 1900 + ltm->tm_year << "/"
-        << setw(2) << setfill('0') << 1 + ltm->tm_mon << "/"
-        << setw(2) << setfill('0') << ltm->tm_mday;
-    return oss.str();
 }
 
-// Helper function to validate user input for end date
-bool validateDateFormat(const string &date)
+Item::Item(int id,
+           const std::string& name,
+           const std::string& category,
+           const std::string& shortDescription,
+           double startingBid,
+           double bidIncrement,
+           const std::string& endDate,
+           int minBuyerRating,
+           double sellerRating,
+           int sellerId)
+    : id(id),
+      name(name),
+      category(category),
+      shortDescription(shortDescription),
+      startingBid(startingBid),
+      currentBid(startingBid),
+      bidIncrement(bidIncrement),
+      endDate(endDate),
+      minBuyerRating(minBuyerRating),
+      sellerRating(sellerRating),
+      sellerId(sellerId),
+      highestBidderId(-1) // default highest bidder
 {
-    if (date.size() != 10 || date[4] != '/' || date[7] != '/')
-    {
-        cout << "Invalid date format. Please enter the date as YYYY/MM/DD." << endl;
-        return false;
-    }
-    return true;
 }
 
-// Constructor
-Item::Item(int id, const string &name, const string &category, const string &description, int startBid, int increment, const string &endDate, float minRating, int sellerId)
-{
-    itemID = id;
-    itemName = name;
+// Getters and setters
+int Item::getId() const {
+    return id;
+}
+void Item::setId(int id) {
+    this->id = id;
+}
+
+std::string Item::getName() const {
+    return name;
+}
+void Item::setName(const std::string& name) {
+    this->name = name;
+}
+
+std::string Item::getCategory() const {
+    return category;
+}
+void Item::setCategory(const std::string& category) {
     this->category = category;
-    this->description = description;
-    starting_bid = startBid;
-    bid_increment = increment;
-    creation_datetime = getCurrentDate();
-    if (validateDateFormat(endDate))
-    {
-        end_datetime = endDate;
-    }
-    else
-    {
-        end_datetime = "Invalid date";
-    }
-    minium_rating = minRating;
-    sellerID = sellerId;
-    highestBidder = "None";
 }
 
-// Getters
-int Item::getItemID() const { return itemID; }
-string Item::getItemName() const { return itemName; }
-string Item::getCategory() const { return category; }
-string Item::getDescription() const { return description; }
-int Item::getStartingBid() const { return starting_bid; }
-int Item::getBidIncrement() const { return bid_increment; }
-string Item::getCreationDateTime() const { return creation_datetime; }
-string Item::getEndDateTime() const { return end_datetime; }
-float Item::getMinimumRating() const { return minium_rating; }
-int Item::getSellerID() const { return sellerID; }
-string Item::getHighestBidder() const { return highestBidder; }
-
-// Setters
-void Item::setItemName(const string &name) {
-    if (bid.empty()) {
-        itemName = name;
-    } else {
-        cout << "Cannot modify the item name after a bid has been placed." << endl;
-    }
+std::string Item::getShortDescription() const {
+    return shortDescription;
 }
-void Item::setCategory(const string &category) {
-    if (bid.empty()) {
-        this->category = category;
-    } else {
-        cout << "Cannot modify the category after a bid has been placed." << endl;
-    }
-}
-void Item::setDescription(const string &description) {
-    if (bid.empty()) {
-        this->description = description;
-    } else {
-        cout << "Cannot modify the description after a bid has been placed." << endl;
-    }
-}
-void Item::setStartingBid(int bid) {
-    if (this->bid.empty()) {
-        starting_bid = bid;
-    } else {
-        cout << "Cannot modify the starting bid after a bid has been placed." << endl;
-    }
-}
-void Item::setBidIncrement(int increment) {
-    if (bid.empty()) {
-        bid_increment = increment;
-    } else {
-        cout << "Cannot modify the bid increment after a bid has been placed." << endl;
-    }
-}
-void Item::setEndDateTime(const string &endDate) {
-    if (bid.empty() && validateDateFormat(endDate)) {
-        end_datetime = endDate;
-    } else {
-        cout << "Cannot modify the end date after a bid has been placed or invalid format." << endl;
-    }
-}
-void Item::setHighestBidder(const string &bidder) { highestBidder = bidder; }
-
-// Display item details
-void Item::displayItemDetails() const
-{
-    cout << "Item ID: " << itemID << endl;
-    cout << "Item Name: " << itemName << endl;
-    cout << "Category: " << category << endl;
-    cout << "Description: " << description << endl;
-    cout << "Starting Bid: " << starting_bid << " CP" << endl;
-    cout << "Bid Increment: " << bid_increment << " CP" << endl;
-    cout << "Creation Date: " << creation_datetime << endl;
-    cout << "End Date: " << end_datetime << endl;
-    cout << "Minimum Rating: " << minium_rating << endl;
-    cout << "Seller ID: " << sellerID << endl;
-    cout << "Highest Bidder: " << highestBidder << endl;
+void Item::setShortDescription(const std::string& shortDescription) {
+    this->shortDescription = shortDescription;
 }
 
-// Add a bid
-void Item::addBid(const Bid &newBid)
-{
-    bid.push_back(newBid);
-    if (newBid.getBidAmount() > getHighestBid())
-    {
-        highestBidder = newBid.getBidderName();
-    }
+double Item::getStartingBid() const {
+    return startingBid;
+}
+void Item::setStartingBid(double startingBid) {
+    this->startingBid = startingBid;
 }
 
-// Remove item listing
-bool Item::removeItemListing()
-{
-    if (bid.empty()) {
-        cout << "Item listing removed successfully." << endl;
-        return true;
-    } else {
-        cout << "Cannot remove the listing after a bid has been placed." << endl;
-        return false;
-    }
+double Item::getCurrentBid() const {
+    return currentBid;
+}
+void Item::setCurrentBid(double currentBid) {
+    this->currentBid = currentBid;
 }
 
-// Get highest bid
-int Item::getHighestBid() const
-{
-    int highest = starting_bid;
-    for (const auto &b : bid)
-    {
-        if (b.getBidAmount() > highest)
-        {
-            highest = b.getBidAmount();
-        }
-    }
-    return highest;
+double Item::getBidIncrement() const {
+    return bidIncrement;
+}
+void Item::setBidIncrement(double bidIncrement) {
+    this->bidIncrement = bidIncrement;
+}
+
+std::string Item::getEndDate() const {
+    return endDate;
+}
+void Item::setEndDate(const std::string& endDate) {
+    this->endDate = endDate;
+}
+
+int Item::getMinBuyerRating() const {
+    return minBuyerRating;
+}
+void Item::setMinBuyerRating(int minBuyerRating) {
+    this->minBuyerRating = minBuyerRating;
+}
+
+double Item::getSellerRating() const {
+    return sellerRating;
+}
+void Item::setSellerRating(double sellerRating) {
+    this->sellerRating = sellerRating;
+}
+
+int Item::getSellerId() const {
+    return sellerId;
+}
+void Item::setSellerId(int sellerId) {
+    this->sellerId = sellerId;
+}
+
+int Item::getHighestBidderId() const {
+    return highestBidderId;
+}
+void Item::setHighestBidderId(int highestBidderId) {
+    this->highestBidderId = highestBidderId;
+}
+
+// Utility Methods
+bool Item::isEligibleToBid(int buyerRating) const {
+    return buyerRating >= minBuyerRating;
 }
