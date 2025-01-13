@@ -3,23 +3,22 @@
 #include <iostream>
 #include <algorithm>
 
+using namespace std;
 // Constructor: Load items from CSV at startup
-ItemController::ItemController() {
-    items = FileHandler::readItemsFromCSV(filePath);
-}
+ItemController::ItemController() {}
 
-// Destructor: Save items to CSV before exiting
-ItemController::~ItemController() {
-    FileHandler::writeItemsToCSV(filePath, items);
-}
+
 
 // Retrieve all items
 std::vector<Item> ItemController::getItems() const {
     return items;
 }
 
+std::vector<Item> ItemController::loadItemsFromFile(const std::string& filePath) {
+    return FileHandler::readItemsFromCSV(filePath);
+}
 // Add a new item
-void ItemController::addItem(const Item& newItem) {
+void ItemController::addItem(const Item& newItem, std::vector<Item>& items) {
     for (const auto& item : items) {
         if (item.getId() == newItem.getId()) {
             std::cerr << "Error: Item with ID " << newItem.getId() << " already exists.\n";
@@ -27,6 +26,7 @@ void ItemController::addItem(const Item& newItem) {
         }
     }
     items.push_back(newItem);
+    FileHandler::writeItemsToCSV(filePath,items);
 }
 
 // Remove an item by its ID
@@ -95,3 +95,6 @@ bool ItemController::updateBid(int itemId, int bidderId, double bidAmount) {
     std::cerr << "Error: Item with ID " << itemId << " not found.\n";
     return false;
 }
+
+
+

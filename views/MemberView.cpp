@@ -9,6 +9,7 @@
 void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allMembers) {
     ItemController itemController;
     std::vector<Item> items = itemController.getItems();
+    std::vector<Item> item = itemController.loadItemsFromFile("data/items.csv");
     int choice = 0;
     while (choice != 6) {
         std::cout << "\n-------------------Member Menu-------------------\n";
@@ -28,7 +29,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 ProfileView::showProfileMenu(currentMember, allMembers);
                 break;
             case 2:
-                std::cout << "List an Item for Sale (feature not implemented yet)\n";
+                ItemView::inputItemDetailsForSale(item);
                 break;
             case 3:
                 std::cout << "View Listing Item\n";

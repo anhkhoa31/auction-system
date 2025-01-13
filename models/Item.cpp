@@ -130,3 +130,5 @@ void Item::setHighestBidderId(int highestBidderId) {
 bool Item::isEligibleToBid(int buyerRating) const {
     return buyerRating >= minBuyerRating;
 }
+
+

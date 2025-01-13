@@ -2,6 +2,7 @@
 #define ITEM_CONTROLLER_H
 
 #include "../models/Item.h"
+#include "../utils/FileHandler.h"
 #include <vector>
 #include <string>
 
@@ -13,11 +14,9 @@ private:
 public:
     ItemController();
 
-    ~ItemController();
-
     std::vector<Item> getItems() const;
-
-    void addItem(const Item& newItem);
+    std::vector<Item> loadItemsFromFile(const std::string& filePath);
+    void addItem(const Item& newItem, std::vector<Item>& items);
 
     bool removeItem(int itemId);
 

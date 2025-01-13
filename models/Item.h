@@ -1,8 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
-
+#include "Bid.h"
 #include <string>
-
+#include <vector>
 class Item {
 private:
     int id;
@@ -17,7 +17,7 @@ private:
     double sellerRating;
     int sellerId;
     int highestBidderId;
-
+    // vector<Bid> bid;
 public:
     Item();
 
@@ -59,6 +59,10 @@ public:
     void setHighestBidderId(int highestBidderId);
 
     bool isEligibleToBid(int buyerRating) const;
+    void addBid(const Bid &newBid);
+    int getHighestBid() const;
+    
+
 };
 
 #endif // ITEM_H
