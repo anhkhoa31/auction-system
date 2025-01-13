@@ -1,7 +1,11 @@
 #include "GuestView.h"
+#include "ItemView.h"
+#include "../controllers/ItemController.h"
 #include <iostream>
 
 void GuestView::showGuestMenu() {
+    ItemController itemController;
+    std::vector<Item> items = itemController.getItems();
     int choice = 0;
     while (choice != 3) {
         std::cout << "\n-------------------Guest Menu-------------------\n";
@@ -17,7 +21,7 @@ void GuestView::showGuestMenu() {
 
         switch (choice) {
             case 1:
-                std::cout << "Viewing all item listings (feature not yet implemented)...\n";
+                ItemView::showNonMemberItemList(items);
                 break;
             case 2:
                 // We can show a sub-menu for searching items
