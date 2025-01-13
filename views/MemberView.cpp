@@ -1,6 +1,5 @@
 #include "MemberView.h"
 #include <iostream>
-#include "SearchAndBidView.h"
 #include "ProfileView.h"
 #include "ItemView.h"
 #include "../controllers/MemberController.h" 
@@ -44,8 +43,6 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 break;
             case 5:
                 //std::cout << "Search and Place a Bid on Items (feature not implemented yet)\n";
-                std::cout << "Search and Place a Bid on Items\n";
-                SearchAndBidView::showSearchAndBidMenu(currentMember, itemController);
                 break;
             case 6:
                 std::cout << "Add item";
