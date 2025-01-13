@@ -3,17 +3,14 @@
 #include <iostream>
 #include <algorithm>
 
-// Constructor: Load items from CSV at startup
 ItemController::ItemController() {
     items = FileHandler::readItemsFromCSV(filePath);
 }
 
-// Destructor: Save items to CSV before exiting
 ItemController::~ItemController() {
     FileHandler::writeItemsToCSV(filePath, items);
 }
 
-// Retrieve all items
 std::vector<Item> ItemController::getItems() const {
     return items;
 }
@@ -94,4 +91,13 @@ bool ItemController::updateBid(int itemId, int bidderId, double bidAmount) {
     }
     std::cerr << "Error: Item with ID " << itemId << " not found.\n";
     return false;
+}
+
+std::vector<Item> ItemController::getItemsByMemberId(int memberId) const {
+    std::vector<Item> memberItems;
+    std::copy_if(items.begin(), items.end(), std::back_inserter(memberItems),
+                 [memberId](const Item& item) {
+                     return item.getMemberId() == memberId;
+                 });
+    return memberItems;
 }

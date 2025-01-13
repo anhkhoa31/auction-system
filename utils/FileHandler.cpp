@@ -87,7 +87,7 @@ void FileHandler::writeMembersToCSV(const std::string& filePath, const std::vect
     file.close();
 }
 
-// Methods for handling Item data
+
 std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
     std::vector<Item> items;
     std::ifstream file(filePath);
@@ -109,7 +109,11 @@ std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
             tokens.push_back(token);
         }
 
-        if (tokens.size() < 10) continue;
+
+        if (tokens.size() < 11) {
+            std::cerr << "Skipping invalid row: " << line << std::endl;
+            continue;
+        }
 
         items.emplace_back(
             std::stoi(tokens[0]),          // ID
@@ -117,11 +121,13 @@ std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
             tokens[2],                     // Category
             tokens[3],                     // Short Description
             std::stod(tokens[4]),          // Starting Bid
-            std::stod(tokens[5]),          // Bid Increment
-            tokens[6],                     // End Date
-            std::stoi(tokens[7]),          // Minimum Buyer Rating
-            std::stod(tokens[8]),          // Seller Rating
-            std::stoi(tokens[9])           // Seller ID
+            std::stod(tokens[5]),          // Current Bid
+            std::stod(tokens[6]),          // Bid Increment
+            tokens[7],                     // End Date
+            std::stoi(tokens[8]),          // Minimum Buyer Rating
+            std::stod(tokens[9]),          // Seller Rating
+            std::stoi(tokens[10]),         // Member ID
+            std::stoi(tokens[11])          // Highest Bidder ID
         );
     }
 
@@ -146,7 +152,7 @@ void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector
              << item.getEndDate() << ","
              << item.getMinBuyerRating() << ","
              << item.getSellerRating() << ","
-             << item.getSellerId() << "\n";
+             << item.getMemberId() << "\n";
     }
 
     file.close();

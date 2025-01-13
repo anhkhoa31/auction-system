@@ -1,47 +1,34 @@
 #include "Item.h"
 
-Item::Item()
-    : id(0),
-      name(""),
-      category(""),
-      shortDescription(""),
-      startingBid(0.0),
-      currentBid(0.0),
-      bidIncrement(0.0),
-      endDate(""),
-      minBuyerRating(0),
-      sellerRating(0.0),
-      sellerId(0),
-      highestBidderId(-1) // default highest bidder
-{
-}
-
 Item::Item(int id,
            const std::string& name,
            const std::string& category,
            const std::string& shortDescription,
            double startingBid,
+           double currentBid,
            double bidIncrement,
            const std::string& endDate,
            int minBuyerRating,
            double sellerRating,
-           int sellerId)
+           int memberId,
+           int highestBidderId)
     : id(id),
       name(name),
       category(category),
       shortDescription(shortDescription),
       startingBid(startingBid),
-      currentBid(startingBid),
+      currentBid(currentBid),
       bidIncrement(bidIncrement),
       endDate(endDate),
       minBuyerRating(minBuyerRating),
       sellerRating(sellerRating),
-      sellerId(sellerId),
-      highestBidderId(-1) // default highest bidder
+      memberId(memberId),
+      highestBidderId(highestBidderId)
 {
 }
 
-// Getters and setters
+
+
 int Item::getId() const {
     return id;
 }
@@ -112,11 +99,11 @@ void Item::setSellerRating(double sellerRating) {
     this->sellerRating = sellerRating;
 }
 
-int Item::getSellerId() const {
-    return sellerId;
+int Item::getMemberId() const {
+    return memberId;
 }
-void Item::setSellerId(int sellerId) {
-    this->sellerId = sellerId;
+void Item::setMemberId(int memberId) {
+    this->memberId = memberId;
 }
 
 int Item::getHighestBidderId() const {

@@ -1,5 +1,6 @@
 #include "MemberView.h"
 #include <iostream>
+#include "SearchAndBidView.h"
 #include "ProfileView.h"
 #include "ItemView.h"
 #include "../controllers/MemberController.h" 
@@ -10,14 +11,16 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
     ItemController itemController;
     std::vector<Item> items = itemController.getItems();
     int choice = 0;
-    while (choice != 6) {
+    while (choice !=8) {
         std::cout << "\n-------------------Member Menu-------------------\n";
         std::cout << "1. Profile Management\n";
         std::cout << "2. List an Item for Sale\n";
-        std::cout << "3. View Listing Item\n";
+        std::cout << "3. View Listed Item\n";
         std::cout << "4. View My Bidding Activity\n";
         std::cout << "5. Search and Place a Bid on Items\n";
-        std::cout << "6. Log Out\n";
+        std::cout << "6. Add item\n";
+        std::cout << "7. Remove item\n";
+        std::cout << "8. Log Out\n";
         std::cout << "-----------------------------------------------\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
@@ -31,16 +34,26 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 std::cout << "List an Item for Sale (feature not implemented yet)\n";
                 break;
             case 3:
-                std::cout << "View Listing Item\n";
-                ItemView::showMemberItemList(items);
+                {
+                    int loggedInMemberId = currentMember.getMemberID(); // Find MemberID of a corresponding account
+                    ItemView::showMemberListedItems(items, loggedInMemberId); // Pass it into argument to show only items listed by him/her
+                }
                 break;
             case 4:
                 std::cout << "View My Bidding Activity (feature not implemented yet)\n";
                 break;
             case 5:
-                std::cout << "Search and Place a Bid on Items (feature not implemented yet)\n";
+                //std::cout << "Search and Place a Bid on Items (feature not implemented yet)\n";
+                std::cout << "Search and Place a Bid on Items\n";
+                SearchAndBidView::showSearchAndBidMenu(currentMember, itemController);
                 break;
             case 6:
+                std::cout << "Add item";
+                break;
+            case 7:
+                std::cout << "Remove item";
+                break;
+            case 8:
                 std::cout << "Logging out...\n";
                 break;
             default:

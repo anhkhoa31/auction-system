@@ -28,6 +28,9 @@ public:
     std::vector<Item> filterItemsByCreditPointRange(double minCP, double maxCP) const;
 
     bool updateBid(int itemId, int bidderId, double bidAmount);
+
+    std::vector<Item> getItemsByMemberId(int memberId) const;
+
 };
 
 #endif // ITEM_CONTROLLER_H

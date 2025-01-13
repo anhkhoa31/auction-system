@@ -15,23 +15,27 @@ private:
     std::string endDate;
     int minBuyerRating;
     double sellerRating;
-    int sellerId;
+    int memberId;
     int highestBidderId;
 
 public:
     Item();
 
+    // Updated Constructor with all necessary parameters
     Item(int id,
          const std::string& name,
          const std::string& category,
          const std::string& shortDescription,
          double startingBid,
+         double currentBid,
          double bidIncrement,
          const std::string& endDate,
          int minBuyerRating,
          double sellerRating,
-         int sellerId);
+         int memberId,
+         int highestBidderId);
 
+    // Getters
     int getId() const;
     std::string getName() const;
     std::string getCategory() const;
@@ -42,9 +46,10 @@ public:
     std::string getEndDate() const;
     int getMinBuyerRating() const;
     double getSellerRating() const;
-    int getSellerId() const;
+    int getMemberId() const;
     int getHighestBidderId() const;
 
+    // Setters
     void setId(int id);
     void setName(const std::string& name);
     void setCategory(const std::string& category);
@@ -55,9 +60,10 @@ public:
     void setEndDate(const std::string& endDate);
     void setMinBuyerRating(int minBuyerRating);
     void setSellerRating(double sellerRating);
-    void setSellerId(int sellerId);
+    void setMemberId(int memberId);
     void setHighestBidderId(int highestBidderId);
 
+    // Utility Methods
     bool isEligibleToBid(int buyerRating) const;
 };
 
