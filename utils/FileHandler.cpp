@@ -150,12 +150,6 @@ std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
             tokens.push_back(token);
         }
 
-
-        if (tokens.size() < 12) {
-            std::cerr << "Skipping invalid row: " << line << std::endl;
-            continue;
-        }
-
         items.emplace_back(
             std::stoi(tokens[0]),          // ID
             tokens[1],                     // Name
