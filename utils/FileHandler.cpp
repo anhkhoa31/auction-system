@@ -128,3 +128,67 @@ void FileHandler::writeMembersToCSV(const std::string& filePath, const std::vect
 
     file.close();
 }
+
+std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
+    std::vector<Item> items;
+    std::ifstream file(filePath);
+
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file: " << filePath << std::endl;
+        return items;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty()) continue;
+
+        std::stringstream ss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+
+        while (std::getline(ss, token, ',')) {
+            tokens.push_back(token);
+        }
+
+        items.emplace_back(
+            std::stoi(tokens[0]),          // ID
+            tokens[1],                     // Name
+            tokens[2],                     // Category
+            tokens[3],                     // Short Description
+            std::stod(tokens[4]),          // Starting Bid
+            std::stod(tokens[5]),          // Current Bid
+            std::stod(tokens[6]),          // Bid Increment
+            tokens[7],                     // End Date
+            std::stoi(tokens[8]),          // Minimum Buyer Rating
+            std::stod(tokens[9]),          // Seller Rating
+            std::stoi(tokens[10]),         // Member ID
+            std::stoi(tokens[11])          // Highest Bidder ID
+        );
+    }
+
+    file.close();
+    return items;
+}
+
+// void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items) {
+//     std::ofstream file(filePath);
+//     if (!file.is_open()) {
+//         std::cerr << "Cannot open file: " << filePath << std::endl;
+//         return;
+//     }
+
+//     for (const auto& item : items) {
+//         file << item.getId() << ","
+//              << item.getName() << ","
+//              << item.getCategory() << ","
+//              << item.getShortDescription() << ","
+//              << item.getStartingBid() << ","
+//              << item.getBidIncrement() << ","
+//              << item.getEndDate() << ","
+//              << item.getMinBuyerRating() << ","
+//              << item.getSellerRating() << ","
+//              << item.getMemberId() << "\n";
+//     }
+
+//     file.close();
+// }

@@ -1,47 +1,40 @@
 #include "Item.h"
-
-Item::Item()
-    : id(0),
-      name(""),
-      category(""),
-      shortDescription(""),
-      startingBid(0.0),
-      currentBid(0.0),
-      bidIncrement(0.0),
-      endDate(""),
-      minBuyerRating(0),
-      sellerRating(0.0),
-      sellerId(0),
-      highestBidderId(-1) // default highest bidder
-{
-}
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <ratio>
+#include <chrono>
 
 Item::Item(int id,
            const std::string& name,
            const std::string& category,
            const std::string& shortDescription,
            double startingBid,
+           double currentBid,
            double bidIncrement,
            const std::string& endDate,
            int minBuyerRating,
            double sellerRating,
-           int sellerId)
+           int memberId,
+        int highestBidderId)
     : id(id),
       name(name),
       category(category),
       shortDescription(shortDescription),
       startingBid(startingBid),
-      currentBid(startingBid),
+      currentBid(currentBid),
       bidIncrement(bidIncrement),
       endDate(endDate),
       minBuyerRating(minBuyerRating),
       sellerRating(sellerRating),
-      sellerId(sellerId),
-      highestBidderId(-1) // default highest bidder
+      memberId(memberId),
+      highestBidderId(highestBidderId)
 {
 }
 
-// Getters and setters
+
+
 int Item::getId() const {
     return id;
 }
@@ -112,11 +105,11 @@ void Item::setSellerRating(double sellerRating) {
     this->sellerRating = sellerRating;
 }
 
-int Item::getSellerId() const {
-    return sellerId;
+int Item::getMemberId() const {
+    return memberId;
 }
-void Item::setSellerId(int sellerId) {
-    this->sellerId = sellerId;
+void Item::setMemberId(int memberId) {
+    this->memberId = memberId;
 }
 
 int Item::getHighestBidderId() const {
@@ -129,4 +122,17 @@ void Item::setHighestBidderId(int highestBidderId) {
 // Utility Methods
 bool Item::isEligibleToBid(int buyerRating) const {
     return buyerRating >= minBuyerRating;
+}
+
+bool Item::isAuctionEnded() const {
+
+    // Implement the logic to check if the auction has ended
+
+    // For example, compare the current date with the end date of the auction
+
+    std::tm tm = {};
+    std::istringstream ss(endDate);
+    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+    auto end_time = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+    return std::chrono::system_clock::now() > end_time;
 }

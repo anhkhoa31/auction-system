@@ -9,6 +9,9 @@ class FileHandler {
 public:
     static std::vector<Member> readMembersFromCSV(const std::string& filePath);
     static void writeMembersToCSV(const std::string& filePath, const std::vector<Member>& members);
+
+    static std::vector<Item> readItemsFromCSV(const std::string& filePath);
+    //static void writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items);
 };
 
 #endif

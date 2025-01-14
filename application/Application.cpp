@@ -50,7 +50,7 @@ int Application::run() {
 
         switch(choice) {
             case 1:
-                AuthView::showLoginScreen(members);
+                AuthView::showLoginMenu(members);
                 break;
             case 2:
                 AuthView::showRegisterScreen(members);
