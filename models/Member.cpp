@@ -141,3 +141,12 @@ std::vector<Item>& Member::getSellItems() {
 void Member::addSellItem(const Item& item) {
     sellItems.push_back(item);
 }
+
+//Change CP from winning buyer to seller.
+void Member::deductCreditPoints(double amount) {
+    creditPoints -= amount;
+}
+
+void Member::addCreditPoints(double amount) {
+    creditPoints += amount;
+}

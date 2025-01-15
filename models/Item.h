@@ -3,7 +3,8 @@
 
 #include <string>
 
-class Item {
+class Item
+{
 private:
     int id;
     std::string name;
@@ -23,13 +24,13 @@ public:
 
     // Updated Constructor with all necessary parameters
     Item(int id,
-         const std::string& name,
-         const std::string& category,
-         const std::string& shortDescription,
+         const std::string &name,
+         const std::string &category,
+         const std::string &shortDescription,
          double startingBid,
          double currentBid,
          double bidIncrement,
-         const std::string& endDate,
+         const std::string &endDate,
          int minBuyerRating,
          double sellerRating,
          int memberId,
@@ -51,13 +52,13 @@ public:
 
     // Setters
     void setId(int id);
-    void setName(const std::string& name);
-    void setCategory(const std::string& category);
-    void setShortDescription(const std::string& shortDescription);
+    void setName(const std::string &name);
+    void setCategory(const std::string &category);
+    void setShortDescription(const std::string &shortDescription);
     void setStartingBid(double startingBid);
     void setCurrentBid(double currentBid);
     void setBidIncrement(double bidIncrement);
-    void setEndDate(const std::string& endDate);
+    void setEndDate(const std::string &endDate);
     void setMinBuyerRating(int minBuyerRating);
     void setSellerRating(double sellerRating);
     void setMemberId(int memberId);
@@ -65,6 +66,9 @@ public:
 
     // Utility Methods
     bool isEligibleToBid(int buyerRating) const;
+
+    //
+    bool isAuctionEnded() const;
 };
 
 #endif // ITEM_H

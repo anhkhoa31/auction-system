@@ -1,4 +1,10 @@
 #include "Item.h"
+#include <ctime>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+#include <ratio>
+#include <chrono>
 
 Item::Item(int id,
            const std::string& name,
@@ -11,7 +17,7 @@ Item::Item(int id,
            int minBuyerRating,
            double sellerRating,
            int memberId,
-           int highestBidderId)
+        int highestBidderId)
     : id(id),
       name(name),
       category(category),
@@ -116,4 +122,17 @@ void Item::setHighestBidderId(int highestBidderId) {
 // Utility Methods
 bool Item::isEligibleToBid(int buyerRating) const {
     return buyerRating >= minBuyerRating;
+}
+
+bool Item::isAuctionEnded() const {
+
+    // Implement the logic to check if the auction has ended
+
+    // For example, compare the current date with the end date of the auction
+
+    std::tm tm = {};
+    std::istringstream ss(endDate);
+    ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+    auto end_time = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+    return std::chrono::system_clock::now() > end_time;
 }

@@ -70,6 +70,9 @@ public:
 
     std::vector<Item>& getSellItems();
     void addSellItem(const Item& item);
+    
+    void deductCreditPoints(double amount);
+    void addCreditPoints(double amount);
 };
 
 #endif

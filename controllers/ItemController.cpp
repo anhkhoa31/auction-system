@@ -41,58 +41,6 @@ bool ItemController::removeItem(int itemId) {
     return false;
 }
 
-
-// Filter items by category
-std::vector<Item> ItemController::filterItemsByCategory(const std::string& category) const {
-    std::vector<Item> filteredItems;
-    std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems),
-                 [&category](const Item& item) {
-                     return item.getCategory() == category;
-                 });
-    return filteredItems;
-}
-
-
-// Filter items by name (case-sensitive, partial match)
-std::vector<Item> ItemController::filterItemsByName(const std::string& name) const {
-    std::vector<Item> filteredItems;
-    for (const auto& item : items) {
-        if (item.getName().find(name) != std::string::npos) {
-            filteredItems.push_back(item);
-        }
-    }
-    return filteredItems;
-}
-
-// Filter items by credit point range
-std::vector<Item> ItemController::filterItemsByCreditPointRange(double minCP, double maxCP) const {
-    std::vector<Item> filteredItems;
-    for (const auto& item : items) {
-        if (item.getCurrentBid() >= minCP && item.getCurrentBid() <= maxCP) {
-            filteredItems.push_back(item);
-        }
-    }
-    return filteredItems;
-}
-
-// Update the highest bid for an item
-bool ItemController::updateBid(int itemId, int bidderId, double bidAmount) {
-    for (auto& item : items) {
-        if (item.getId() == itemId) {
-            if (bidAmount >= item.getCurrentBid() + item.getBidIncrement()) {
-                item.setCurrentBid(bidAmount);
-                item.setHighestBidderId(bidderId);
-                return true;
-            } else {
-                std::cerr << "Error: Bid amount is too low.\n";
-                return false;
-            }
-        }
-    }
-    std::cerr << "Error: Item with ID " << itemId << " not found.\n";
-    return false;
-}
-
 std::vector<Item> ItemController::getItemsByMemberId(int memberId) const {
     std::vector<Item> memberItems;
     std::copy_if(items.begin(), items.end(), std::back_inserter(memberItems),

@@ -4,6 +4,7 @@
 #include "ItemView.h"
 #include "../controllers/MemberController.h" 
 #include "../controllers/ItemController.h"
+#include "../views/SearchAndBidView.h"
 // ^ if you need to save after changes
 
 void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allMembers) {
@@ -40,7 +41,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 std::cout << "View My Bidding Activity (feature not implemented yet)\n";
                 break;
             case 5:
-                std::cout << "Search and Place a Bid on Items (feature not implemented yet)\n";
+                SearchAndBidView::searchAndPlaceBid(currentMember, items);
                 break;
             case 6:
                 std::cout << "Logging out...\n";
