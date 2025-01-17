@@ -2,6 +2,7 @@
 #include <iostream>
 #include "ProfileView.h"   // Include your new ProfileView
 #include "ItemView.h"
+#include "RatingsView.h"
 #include "../controllers/MemberController.h" 
 #include "../controllers/ItemController.h"
 #include "../views/SearchAndBidView.h"
@@ -11,14 +12,15 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
     ItemController itemController;
     std::vector<Item> items = itemController.getItems();
     int choice = 0;
-    while (choice != 6) {
+    while (choice != 7) {
         std::cout << "\n-------------------Member Menu-------------------\n";
         std::cout << "1. Profile Management\n";
         std::cout << "2. List an Item for Sale\n";
         std::cout << "3. View My Item Listings\n";
         std::cout << "4. View My Bidding Activity\n";
         std::cout << "5. Search and Place a Bid on Items\n";
-        std::cout << "6. Log Out\n";
+        std::cout << "6. Give Ratings and Check Reviews\n";
+        std::cout << "7. Log Out\n";
         std::cout << "-----------------------------------------------\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
@@ -44,6 +46,10 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 SearchAndBidView::searchAndPlaceBid(currentMember, items);
                 break;
             case 6:
+                RatingsView ratingsView;
+                ratingsView.showRatingsMenu(currentMember);
+                break;
+            case 7:
                 std::cout << "Logging out...\n";
                 break;
             default:

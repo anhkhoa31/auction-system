@@ -21,8 +21,6 @@ private:
 
 public:
     Item();
-
-    // Updated Constructor with all necessary parameters
     Item(int id,
          const std::string &name,
          const std::string &category,
@@ -66,9 +64,9 @@ public:
 
     // Utility Methods
     bool isEligibleToBid(int buyerRating) const;
-
-    //
     bool isAuctionEnded() const;
+
+    bool canRate(int memberId) const;
 };
 
 #endif // ITEM_H

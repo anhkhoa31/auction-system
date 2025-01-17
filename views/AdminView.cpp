@@ -1,6 +1,7 @@
 #include "AdminView.h"
 #include <iostream>
 #include <iomanip>  
+#include "../utils/FileHandler.h"
 
 void AdminView::showAdminMenu(std::vector<Member>& members, std::vector<Item>& items) {
     int choice = 0;
@@ -19,7 +20,7 @@ void AdminView::showAdminMenu(std::vector<Member>& members, std::vector<Item>& i
                 viewAllMembers(members);
                 break;
             case 2:
-                std::cout << "View all Item Listing (not yet implemented)...\n";
+                viewAllItemListings();
                 break;
             case 3:
                 std::cout << "Logging out...\n";
@@ -76,4 +77,46 @@ void AdminView::viewAllMembers(const std::vector<Member>& members) {
     }
 
     std::cout << "=======================================================\n";
+}
+
+void AdminView::viewAllItemListings() {
+    FileHandler fileHandler;
+    std::vector<Item> loadedItems = fileHandler.readItemsFromCSV("data/items.csv");
+
+    if (loadedItems.empty()) {
+        std::cout << "\nNo items found.\n";
+        return;
+    }
+
+    std::cout << "\n===================== ALL ITEM LISTINGS =====================\n";
+
+    // Print header
+    std::cout
+        << std::left << std::setw(5)  << "ID"           << " | "
+        << std::left << std::setw(20) << "Name"         << " | "
+        << std::left << std::setw(15) << "Category"     << " | "
+        << std::left << std::setw(12) << "StartBid"     << " | "
+        << std::left << std::setw(12) << "CurrentBid"   << " | "
+        << std::left << std::setw(12) << "Increment"    << " | "
+        << std::left << std::setw(20) << "EndDate"
+        << "\n";
+
+    // Dash Line
+    std::string dashLine(105, '-'); // Adjusted for the new total column width
+    std::cout << dashLine << "\n";
+
+    // Print each item
+    for (const auto& item : loadedItems) {
+        std::cout
+            << std::left << std::setw(5)  << item.getId()                << " | "
+            << std::left << std::setw(20) << item.getName()              << " | "
+            << std::left << std::setw(15) << item.getCategory()          << " | "
+            << std::left << std::setw(12) << item.getStartingBid()       << " | "
+            << std::left << std::setw(12) << item.getCurrentBid()        << " | "
+            << std::left << std::setw(12) << item.getBidIncrement()      << " | "
+            << std::left << std::setw(20) << item.getEndDate()
+            << "\n";
+    }
+
+    std::cout << dashLine << "\n";
 }

@@ -125,14 +125,21 @@ bool Item::isEligibleToBid(int buyerRating) const {
 }
 
 bool Item::isAuctionEnded() const {
-
-    // Implement the logic to check if the auction has ended
-
-    // For example, compare the current date with the end date of the auction
-
     std::tm tm = {};
     std::istringstream ss(endDate);
     ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
+
     auto end_time = std::chrono::system_clock::from_time_t(std::mktime(&tm));
-    return std::chrono::system_clock::now() > end_time;
+    auto now = std::chrono::system_clock::now();
+
+    std::cout << "Debug: Comparing end time (" 
+              << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") 
+              << ") with current time.\n";
+
+    return now > end_time;
+}
+
+
+bool Item::canRate(int memberId) const {
+    return this->memberId == memberId || this->highestBidderId == memberId;
 }

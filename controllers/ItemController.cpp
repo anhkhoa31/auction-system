@@ -19,7 +19,7 @@ std::vector<Item> ItemController::getItems() const {
 void ItemController::addItem(const Item& newItem) {
     for (const auto& item : items) {
         if (item.getId() == newItem.getId()) {
-            std::cerr << "Error: Item with ID " << newItem.getId() << " already exists.\n";
+            std::cerr << "Error: Item with ID " << newItem.getId() << " already exists\n";
             return;
         }
     }

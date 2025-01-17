@@ -170,6 +170,57 @@ std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
     return items;
 }
 
+void FileHandler::updateMemberAvgRating(int memberId, double avgRating) {
+    std::vector<Member> members = readMembersFromCSV("data/members.csv");
+    for (auto& member : members) {
+        if (member.getMemberID() == memberId) {
+            member.setAvgRatings(avgRating);
+            break;
+        }
+    }
+    writeMembersToCSV("data/members.csv", members);
+}
+
+void FileHandler::writeReview(int targetMemberId, int reviewerId, const std::string& review, int rating) {
+    std::ofstream reviewsFile("data/reviews.csv", std::ios::app);
+    if (!reviewsFile) {
+        std::cerr << "Failed to open reviews.csv for writing\n";
+        return;
+    }
+    reviewsFile << targetMemberId << "," << reviewerId << ",\"" << review << "\"," << rating << "\n";
+    reviewsFile.close();
+}
+
+std::vector<std::string> FileHandler::readReviewsForMember(int memberId) {
+    std::ifstream reviewsFile("data/reviews.csv");
+    std::vector<std::string> reviews;
+    std::string line;
+
+    if (!reviewsFile) {
+        std::cerr << "Failed to open reviews.csv for reading\n";
+        return reviews;
+    }
+
+    while (std::getline(reviewsFile, line)) {
+        std::stringstream ss(line);
+        std::string field;
+        int targetMemberId;
+
+        std::getline(ss, field, ',');
+        targetMemberId = std::stoi(field);
+
+        // If the targetMemberId matches the memberId
+        if (targetMemberId == memberId) {
+            std::getline(ss, field, ','); // Skip reviewerId
+            std::getline(ss, field, ','); // Extract review text
+            reviews.push_back(field);    // Add review text to the result
+        }
+    }
+
+    reviewsFile.close();
+    return reviews;
+}
+
 // void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items) {
 //     std::ofstream file(filePath);
 //     if (!file.is_open()) {
