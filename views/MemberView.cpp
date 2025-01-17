@@ -31,7 +31,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 ProfileView::showProfileMenu(currentMember, allMembers);
                 break;
             case 2:
-                std::cout << "List an Item for Sale (feature not implemented yet)\n";
+                ItemView::inputItemDetailsForSale(items);
                 break;
             case 3:
                 {

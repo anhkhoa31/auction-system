@@ -17,9 +17,7 @@ public:
 
     std::vector<Item> getItems() const;
 
-    void addItem(const Item& newItem);
-
-    bool removeItem(int itemId);
+    void addItem(const Item& newItem, std::vector<Item>& items);
 
     std::vector<Item> getItemsByMemberId(int memberId) const;
 
