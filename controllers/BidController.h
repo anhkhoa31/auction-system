@@ -6,15 +6,15 @@
 #include "../models/Item.h"
 class BidController {
 public:
-    static void searchAndPlaceBid(Member &currentMember, std::vector<Item> &items);
+    static void searchAndPlaceBid(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members);
 
-    static void searchByName(Member &currentMember, std::vector<Item> &items);
+    static void searchByName(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members);
 
-    static void searchByCategory(Member &currentMember, std::vector<Item> &items);
+    static void searchByCategory(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members);
 
-    static void searchByCPRange(Member &currentMember, std::vector<Item> &items);
+    static void searchByCPRange(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members);
 
-    static void placeBid(Member &currentMember, Item &item);
+    static void placeBid(Member &currentMember, Item &item, std::vector<Item> &items, std::vector<Member> &members);
 
     static void handleAutomaticBids(Member &currentMember, Item &item, double bidLimits);
 

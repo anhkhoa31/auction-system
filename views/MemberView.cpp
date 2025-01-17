@@ -41,7 +41,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 std::cout << "View My Bidding Activity (feature not implemented yet)\n";
                 break;
             case 5:
-                SearchAndBidView::searchAndPlaceBid(currentMember, items);
+                SearchAndBidView::searchAndPlaceBid(currentMember, items, allMembers);
                 break;
             case 6:
                 std::cout << "Logging out...\n";

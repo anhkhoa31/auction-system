@@ -170,25 +170,25 @@ std::vector<Item> FileHandler::readItemsFromCSV(const std::string& filePath) {
     return items;
 }
 
-// void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items) {
-//     std::ofstream file(filePath);
-//     if (!file.is_open()) {
-//         std::cerr << "Cannot open file: " << filePath << std::endl;
-//         return;
-//     }
+void FileHandler::writeItemsToCSV(const std::string& filePath, const std::vector<Item>& items) {
+    std::ofstream file(filePath);
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file: " << filePath << std::endl;
+        return;
+    }
 
-//     for (const auto& item : items) {
-//         file << item.getId() << ","
-//              << item.getName() << ","
-//              << item.getCategory() << ","
-//              << item.getShortDescription() << ","
-//              << item.getStartingBid() << ","
-//              << item.getBidIncrement() << ","
-//              << item.getEndDate() << ","
-//              << item.getMinBuyerRating() << ","
-//              << item.getSellerRating() << ","
-//              << item.getMemberId() << "\n";
-//     }
+    for (const auto& item : items) {
+        file << item.getId() << ","
+             << item.getName() << ","
+             << item.getCategory() << ","
+             << item.getShortDescription() << ","
+             << item.getStartingBid() << ","
+             << item.getBidIncrement() << ","
+             << item.getEndDate() << ","
+             << item.getMinBuyerRating() << ","
+             << item.getSellerRating() << ","
+             << item.getMemberId() << "\n";
+    }
 
-//     file.close();
-// }
+    file.close();
+}
