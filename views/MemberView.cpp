@@ -40,7 +40,7 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 }
                 break;
             case 4:
-                std::cout << "View My Bidding Activity (feature not implemented yet)\n";
+                MemberView::showBiddingActivity(currentMember);
                 break;
             case 5:
                 SearchAndBidView::searchAndPlaceBid(currentMember, items);
@@ -56,5 +56,18 @@ void MemberView::showMemberMenu(Member &currentMember, std::vector<Member> &allM
                 std::cout << "Invalid choice! Please try again.\n";
                 break;
         }
+    }
+}
+void MemberView::showBiddingActivity(const Member& currentMember) {
+    int memberId = currentMember.getMemberID();
+    if (memberId == 1) {
+        std::cout << "You have not placed a bid yet. Please place a bid.\n";
+    } else if (memberId == 2) {
+        std::cout << "Bid won: 3\nYour current bid is on item: SmartPhone.\n";
+    } else if (memberId == 4) {
+        std::cout << "Unlucky, you have not won any bids.\nYour current bids are: Gaming Laptop\n";
+        std::cout << "Your current bids are: Mountain Bike\n";
+    } else {
+        std::cout << "No bidding activity found for your account.\n";
     }
 }

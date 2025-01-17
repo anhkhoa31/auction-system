@@ -7,6 +7,7 @@
 class MemberView {
 public:
     static void showMemberMenu(Member &currentMember, std::vector<Member> &allMembers);
+    static void showBiddingActivity(const Member& currentMember);
 };
 
 #endif
