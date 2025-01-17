@@ -1,5 +1,5 @@
 #include "Member.h"
-#include "../controllers/RatingsController.h"
+#include <iostream>
 
 // Default constructor
 Member::Member()
@@ -12,12 +12,13 @@ Member::Member()
       IDType(""),
       IDNumber(""),
       creditPoints(0),
-      avgRatings(3.0) // Default rating
+      avgRatings(3) // default rating
 {
-    // bidItems and sellItems are default-initialized (empty)
+    // bidItems, sellItems, and ratingThroughTransaction 
+    // are automatically default-initialized (empty)
 }
 
-// Parameterized constructor
+// Parametrized constructor
 Member::Member(int id,
                const std::string& user,
                const std::string& pass,
@@ -35,12 +36,15 @@ Member::Member(int id,
       IDType(type),
       IDNumber(number),
       creditPoints(0),
-      avgRatings(3.0) // Default rating
+      avgRatings(3) // default rating
 {
-    // bidItems and sellItems are default-initialized (empty)
+    // bidItems, sellItems, and ratingThroughTransaction 
+    // remain empty by default
 }
 
-// Getters and Setters
+// ------------------------------------------------------------------
+// Getters / Setters for basic fields
+// ------------------------------------------------------------------
 int Member::getMemberID() const {
     return memberID;
 }
@@ -104,14 +108,26 @@ void Member::setCreditPoints(int points) {
     creditPoints = points;
 }
 
-double Member::getAvgRatings() const {
+int Member::getAvgRatings() const {
     return avgRatings;
 }
-void Member::setAvgRatings(double rating) {
+void Member::setAvgRatings(int rating) {
     avgRatings = rating;
 }
 
+// ------------------------------------------------------------------
+// ratingThroughTransaction
+// ------------------------------------------------------------------
+// std::vector<int> Member::getRatingThroughTransaction() const {
+//     return ratingThroughTransaction;
+// }
+// void Member::addRating(int rating) {
+//     ratingThroughTransaction.push_back(rating);
+// }
+
+// ------------------------------------------------------------------
 // bidItems & sellItems
+// ------------------------------------------------------------------
 std::vector<Item>& Member::getBidItems() {
     return bidItems;
 }
@@ -126,16 +142,11 @@ void Member::addSellItem(const Item& item) {
     sellItems.push_back(item);
 }
 
-// Change credit points
+//Change CP from winning buyer to seller.
 void Member::deductCreditPoints(double amount) {
     creditPoints -= amount;
 }
+
 void Member::addCreditPoints(double amount) {
     creditPoints += amount;
-}
-
-// Retrieve Reviews
-std::vector<std::string> Member::getReviews() const {
-    RatingsController ratingsController;
-    return ratingsController.getMemberReviews(getMemberID());
 }

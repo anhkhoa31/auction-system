@@ -12,8 +12,6 @@ public:
 private:
     // NEW FUNCTION to display all members in a table/dash-board style
     static void viewAllMembers(const std::vector<Member>& members);
-    static void viewAllItemListings();
-
 };
 
 #endif

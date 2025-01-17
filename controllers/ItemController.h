@@ -17,9 +17,17 @@ public:
 
     std::vector<Item> getItems() const;
 
-    void addItem(const Item& newItem, std::vector<Item>& items);
+    void addItem(const Item& newItem);
 
     bool removeItem(int itemId);
+
+    std::vector<Item> filterItemsByCategory(const std::string& category) const;
+
+    std::vector<Item> filterItemsByName(const std::string& name) const;
+
+    std::vector<Item> filterItemsByCreditPointRange(double minCP, double maxCP) const;
+
+    bool updateBid(int itemId, int bidderId, double bidAmount);
 
     std::vector<Item> getItemsByMemberId(int memberId) const;
 

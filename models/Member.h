@@ -3,10 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "Item.h"
-
-// Forward declaration to avoid tight coupling
-class RatingsController;
+#include "Item.h"  // Include Item so we can use std::vector<Item>
 
 class Member {
 private:
@@ -19,14 +16,13 @@ private:
     std::string IDType;
     std::string IDNumber;
     int creditPoints;
-    double avgRatings;
+    int avgRatings;
 
-    // Associated Items
-    std::vector<Item> bidItems;
-    std::vector<Item> sellItems;
+    // NEW FIELDS
+    std::vector<Item> bidItems;   // Items the member is currently bidding on
+    std::vector<Item> sellItems;  // Items the member has posted for sale
 
 public:
-    // Constructors
     Member();
     Member(int id,
            const std::string& username,
@@ -37,7 +33,7 @@ public:
            const std::string& IDType,
            const std::string& IDNumber);
 
-    // Getters and Setters
+    // Existing getters and setters
     int getMemberID() const;
     void setMemberID(int id);
 
@@ -65,20 +61,18 @@ public:
     int getCreditPoints() const;
     void setCreditPoints(int points);
 
-    double getAvgRatings() const;
-    void setAvgRatings(double rating);
+    int getAvgRatings() const;
+    void setAvgRatings(int rating);
 
-    // Methods for Items
+    // NEW METHODS for bidItems and sellItems
     std::vector<Item>& getBidItems();
     void addBidItem(const Item& item);
 
     std::vector<Item>& getSellItems();
     void addSellItem(const Item& item);
-
-    // Manage Ratings and Reviews
+    
     void deductCreditPoints(double amount);
     void addCreditPoints(double amount);
-    std::vector<std::string> getReviews() const;
 };
 
 #endif
