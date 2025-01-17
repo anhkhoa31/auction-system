@@ -140,6 +140,6 @@ bool Item::isAuctionEnded() const {
 }
 
 
-bool Item::canRate(int memberId) const {
-    return this->memberId == memberId || this->highestBidderId == memberId;
-}
+// bool Item::canRate(int memberId) const {
+//     return this->memberId == memberId || this->highestBidderId == memberId;
+// }

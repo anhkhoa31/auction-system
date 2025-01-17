@@ -66,7 +66,7 @@ public:
     bool isEligibleToBid(int buyerRating) const;
     bool isAuctionEnded() const;
 
-    bool canRate(int memberId) const;
+    //bool canRate(int memberId) const;
 };
 
 #endif // ITEM_H
