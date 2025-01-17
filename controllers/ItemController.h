@@ -17,7 +17,7 @@ public:
 
     std::vector<Item> getItems() const;
 
-    void addItem(const Item& newItem);
+    void addItem(const Item& newItem, std::vector<Item>& items);
 
     bool removeItem(int itemId);
 

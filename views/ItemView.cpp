@@ -63,6 +63,54 @@ void ItemView::showMemberListedItems(const std::vector<Item>& items, int memberI
     }
 }
 
+void ItemView::inputItemDetailsForSale(std::vector<Item>& items)
+{
+    int id;
+    std::string name, category, shortDescription, endDate;
+    double startingBid, bidIncrement;
+    int minBuyerRating;
+    
+    Member member;
+    
+    std::cout << "\n==== List Item for Sale ====\n";
+    std::cout << "Enter ID: ";
+    std::cin >> id;
+    std::cin.ignore();  // Ignore the leftover newline character from the previous input
+    
+    std::cout << "Enter Item Name: ";
+    std::getline(std::cin, name);
+    
+    std::cout << "Enter Category: ";
+    std::getline(std::cin, category);
+    
+    std::cout << "Enter Short Description: ";
+    std::getline(std::cin, shortDescription);
+    
+    std::cout << "Enter Starting Bid (CP): ";
+    std::cin >> startingBid;
+    std::cout << "Enter Bid Increment (CP): ";
+    std::cin >> bidIncrement;
+    std::cin.ignore();  // Ignore the leftover newline character
+    
+    std::cout << "Enter Auction End Date (YYYY-MM-DD HH:MM:SS): ";
+    std::getline(std::cin, endDate);
+    
+    std::cout << "Enter Minimum Buyer Rating: ";
+    std::cin >> minBuyerRating;
+
+    // Initialize currentBid to startingBid and highestBidderId to 0
+    double currentBid = startingBid;
+    int highestBidderId = 0;
+
+    // Create and return the new item
+    Item newItem(id, name, category, shortDescription, startingBid, currentBid, bidIncrement, endDate,
+                 minBuyerRating, member.getAvgRatings(), member.getMemberID(), highestBidderId);
+    std::cout << "Item listed for sale successfully!\n";
+
+    // Add the new item to the items vector
+    ItemController itemcontroller;
+    itemcontroller.addItem(newItem, items);
+}
 
 
 void ItemView::showNoItemsMessage() {

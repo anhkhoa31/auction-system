@@ -23,3 +23,14 @@ std::vector<Item> ItemController::getItemsByMemberId(int memberId) const {
                  });
     return memberItems;
 }
+
+void ItemController::addItem(const Item& newItem, std::vector<Item>& items) {
+    for (const auto& item : items) {
+        if (item.getId() == newItem.getId()) {
+            std::cerr << "Error: Item with ID " << newItem.getId() << " already exists.\n";
+            return;
+        }
+    }
+    items.push_back(newItem);
+    FileHandler::writeItemsToCSV(filePath,items);
+}
