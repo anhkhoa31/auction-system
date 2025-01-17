@@ -7,8 +7,9 @@
 #include "ItemController.h"
 #include "../models/Member.h"
 #include "../models/Item.h"
+#include "../utils/FileHandler.h"
 
-void BidController::searchByName(Member &currentMember,std::vector<Item> &items) {
+void BidController::searchByName(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members) {
     std::string name;
     std::cout << "Enter the name of the item: ";
     std::cin.ignore();
@@ -43,11 +44,11 @@ void BidController::searchByName(Member &currentMember,std::vector<Item> &items)
 
     if (itemChoice > 0 && itemChoice <= results.size()) {
         BidController bidController;
-        bidController.placeBid(currentMember, results[itemChoice - 1]);
+        bidController.placeBid(currentMember, results[itemChoice - 1], items, members);
     }
 }
 
-void BidController::searchByCategory(Member &currentMember, std::vector<Item> &items) {
+void BidController::searchByCategory(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members) {
     std::vector<std::string> categories = {"Electronics", "Collectibles", "Furniture", "Vehicles"};
     std::cout << "Available Categories:\n";
     for (size_t i = 0; i < categories.size(); ++i) {
@@ -88,12 +89,12 @@ void BidController::searchByCategory(Member &currentMember, std::vector<Item> &i
         std::cin >> itemChoice;
 
         if (itemChoice > 0 && itemChoice <= results.size()) {
-            placeBid(currentMember, results[itemChoice - 1]);
+            placeBid(currentMember, results[itemChoice - 1], items, members);
         }
    }
 }
 
-void BidController::searchByCPRange(Member &currentMember, std::vector<Item> &items) {
+void BidController::searchByCPRange(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members) {
     double minCP, maxCP;
     std::cout << "Enter the minimum CP: ";
     std::cin >> minCP;
@@ -128,11 +129,11 @@ void BidController::searchByCPRange(Member &currentMember, std::vector<Item> &it
     std::cin >> itemChoice;
 
     if (itemChoice > 0 && itemChoice <= results.size()) {
-        placeBid(currentMember, results[itemChoice - 1]);
+        placeBid(currentMember, results[itemChoice - 1], items, members);
     }
 }
 
-void BidController::placeBid(Member &currentMember, Item &item) {
+void BidController::placeBid(Member &currentMember, Item &item, std::vector<Item> &items, std::vector<Member> &members) {
     double bidAmount;
     std::cout << "Enter your bid amount: ";
     std::cin >> bidAmount;
@@ -173,11 +174,11 @@ void BidController::placeBid(Member &currentMember, Item &item) {
         }
     }
 
-    // Prevent bid withdrawal and item cancellation
-    if (item.getHighestBidderId() != 0) {
-        std::cout << "You cannot withdraw your bid once placed.\n";
-        return;
-    }
+    // // Prevent bid withdrawal and item cancellation
+    // if (item.getHighestBidderId() != 0) {
+    //     std::cout << "You cannot withdraw your bid once placed.\n";
+    //     return;
+    // }
 
     // Place the bid
     item.setCurrentBid(bidAmount);

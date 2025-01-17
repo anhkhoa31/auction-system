@@ -8,7 +8,7 @@
 
 class SearchAndBidView {
 public:
-    static void searchAndPlaceBid(Member &currentMember, std::vector<Item> &items);
+    static void searchAndPlaceBid(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members);
 };
 
 #endif

@@ -9,7 +9,7 @@
 #include "../models/Item.h"
 #include "SearchAndBidView.h"
 
-void SearchAndBidView::searchAndPlaceBid(Member &currentMember, std::vector<Item> &items) {
+void SearchAndBidView::searchAndPlaceBid(Member &currentMember, std::vector<Item> &items, std::vector<Member> &members) {
     int choice = 0;
     while (choice != 4) {
         std::cout << "\n-------------------Search and Place a Bid-------------------\n";
@@ -24,13 +24,13 @@ void SearchAndBidView::searchAndPlaceBid(Member &currentMember, std::vector<Item
 
         switch (choice) {
             case 1:
-                BidController::searchByName(currentMember, items);
+                BidController::searchByName(currentMember, items, members);
                 break;
             case 2:
-                BidController::searchByCategory(currentMember, items);
+                BidController::searchByCategory(currentMember, items, members);
                 break;
             case 3:
-                BidController::searchByCPRange(currentMember, items);
+                BidController::searchByCPRange(currentMember, items, members);
                 break;
             case 4:
                 std::cout << "Returning to Member Menu...\n";
